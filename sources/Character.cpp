@@ -22,10 +22,16 @@ double Character::distance(Character* other_character){
     return this->getLocation().distance(other_character->getLocation());
 }
 
+void Character::setLocation(Point location){
+    this->location.setX(location.getX());
+    this->location.setY(location.getY());
+}
+
 void Character::hit(int dmg){
     if(dmg < 0){
         throw invalid_argument("Damage cannot be negative");
     }
+    this->hps -= dmg;
 }
 
 string Character::getName(){
@@ -37,11 +43,15 @@ Point Character::getLocation(){
     return return_location;
 }
 
-bool Character::isHasTeam(){
+bool Character::hasTeam(){
     return this->team_flag;
 }
 
 void Character::setHasTeam(bool new_flag){
     this->team_flag = new_flag;
+}
+
+int Character::getHP(){
+    return this->hps;
 }
 

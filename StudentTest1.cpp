@@ -9,9 +9,10 @@
 #include "sources/Team2.hpp"
 #include <random>
 #include <chrono>
+#include <iostream>
 
 using namespace ariel;
-
+using namespace std;
 //<--------------------Helper Functions-------------------->
 //https://www.geeksforgeeks.org/generate-a-random-float-number-in-cpp/
 double random_float(double min = -100, double max = 100) {
@@ -103,7 +104,7 @@ TEST_SUITE("Classes initialization tests and Team modification( add(),stillAlive
 
     TEST_CASE("Cowboy initialization") {
         Cowboy cowboy{"Bob", Point{2, 3}};
-        CHECK(cowboy.hasboolets());
+        CHECK(cowboy.hasBoolets());
         CHECK_EQ(cowboy.getName(), "Bob");
         CHECK_EQ(cowboy.getLocation().distance(Point{2, 3}), 0);
         CHECK_NE(cowboy.getLocation().distance(Point{3, 2}), 0);
@@ -169,6 +170,7 @@ TEST_SUITE("Classes initialization tests and Team modification( add(),stillAlive
         auto over = create_cowboy();
         CHECK_THROWS_AS(team1.add(over),std::runtime_error);
         CHECK_THROWS_AS(team2.add(over),std::runtime_error);
+        delete over;
     }
 
     TEST_CASE("Appointing the same captain to different teams") {
@@ -220,7 +222,7 @@ TEST_SUITE("Battle related methods") {
         };
 
         shoot(6);
-        CHECK_FALSE(cowboy->hasboolets());
+        CHECK_FALSE(cowboy->hasBoolets());
         CHECK_NOTHROW(cowboy->shoot(target)); // This should not damage the target
         cowboy->reload();
 
@@ -233,6 +235,8 @@ TEST_SUITE("Battle related methods") {
         cowboy->reload();
         shoot(1);
         CHECK_FALSE(target->isAlive()); // Target should be dead
+        delete cowboy;
+        delete target;
     }
 
 
@@ -262,13 +266,18 @@ TEST_SUITE("Battle related methods") {
         }
 
         CHECK_FALSE((old->isAlive() || young->isAlive() || trained->isAlive()));
+
+        delete old ;
+        delete trained ;
+        delete young ;
+        delete cowboy ;
     }
 
     TEST_CASE("Ninjas speeds are different") {
-        OldNinja old{"Bob", Point{random_float() + 15, random_float() + 15}};
-        TrainedNinja trained{"Kung fu panda", Point{random_float() + 15, random_float() + 15}};
-        YoungNinja young{"Karate kid", Point{random_float() + 15, random_float() + 15}};
-        Cowboy cowboy{"Clint", Point{0, 0}};
+        OldNinja old{"Bob", Point{random_float(0) + 15, random_float(0) + 15}};
+        TrainedNinja trained{"Kung fu panda", Point{random_float(0) + 15, random_float(0) + 15}};
+        YoungNinja young{"Karate kid", Point{random_float(0) + 15, random_float(0) + 15}};
+        Cowboy cowboy{"Clint", Point{0, 0}}; 
 
         double old_distance = old.distance(&cowboy);
         double young_distance = young.distance(&cowboy);
@@ -382,6 +391,11 @@ TEST_SUITE("Battle related methods") {
         CHECK_THROWS_AS(yninja->hit(-random_float(1, 100)), std::invalid_argument);
         CHECK_THROWS_AS(oninja->hit(-random_float(1, 100)), std::invalid_argument);
         CHECK_THROWS_AS(tninja->hit(-random_float(1, 100)), std::invalid_argument);
+
+        delete cowboy;
+        delete yninja;
+        delete oninja;
+        delete tninja;
     }
 
     TEST_CASE("Dead cowboy can not reload") {
@@ -395,6 +409,8 @@ TEST_SUITE("Battle related methods") {
         }
 
         CHECK_THROWS_AS(cowboy2->reload(), std::runtime_error);
+        delete cowboy;
+        delete cowboy2;
     }
 
     TEST_CASE("No self harm") {
@@ -407,6 +423,11 @@ TEST_SUITE("Battle related methods") {
         CHECK_THROWS_AS(yninja->slash(yninja), std::runtime_error);
         CHECK_THROWS_AS(oninja->slash(oninja), std::runtime_error);
         CHECK_THROWS_AS(tninja->slash(tninja), std::runtime_error);
+
+        delete cowboy;
+        delete yninja;
+        delete oninja;
+        delete tninja;
     }
 }
 

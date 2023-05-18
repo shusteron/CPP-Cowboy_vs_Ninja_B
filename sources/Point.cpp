@@ -16,8 +16,8 @@ double Point::distance(Point point){
     return sqrt(pow(this->getX() - point.getX(), 2) + pow(this->getY() - point.getY(), 2));
 }
 
-void Point::print(){
-    cout << "(" + to_string(this->_x_) + "," + to_string(this->_y_) + ")"<<endl;
+string Point::print(){
+    return "(" + to_string(this->_x_) + "," + to_string(this->_y_) + ")";
 }
 
 Point Point::moveTowards(Point from, Point goal, double distance){
@@ -26,13 +26,15 @@ Point Point::moveTowards(Point from, Point goal, double distance){
     }
 
     double current_distance = from.distance(goal);
-    if(current_distance >= distance){
+    if(current_distance <= distance){
         return goal;
+        
     } else {
-        return Point((from.getX() + (distance * (goal.getX() - from.getX()) / current_distance)), 
-                    (from.getY() + (distance * (goal.getY() - from.getY())/ current_distance)));
+        double ratio = distance / current_distance;
+        double new_x = from.getX() + (ratio * (goal.getX() - from.getX()));
+        double new_y = from.getY() + (ratio * (goal.getY() - from.getY()));
+        return Point(new_x, new_y);
     }
-
 }
 
 double Point::getX(){
@@ -41,4 +43,12 @@ double Point::getX(){
 
 double Point::getY(){
     return this->_y_;
+}
+
+void Point::setX(double x){
+    this->_x_ = x;
+}
+
+void Point::setY(double y){
+    this->_y_ = y;
 }

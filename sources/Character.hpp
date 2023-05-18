@@ -23,8 +23,10 @@ class Character{
         void hit(int dmg);
         string getName();
         Point getLocation();
+        void setLocation(Point location);
         virtual string print() = 0;   
-        bool isHasTeam();
+        int getHP();
+        bool hasTeam();
         void setHasTeam(bool flag);
         virtual ~Character() = default;
 
