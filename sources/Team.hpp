@@ -23,6 +23,8 @@ class Team{
         void attack(Team* enemy_team);
         int stillAlive();
         void print();   
+        void setNewLeader();
+        Character* closestEnemy(Team* enemy_team);
         ~Team();
 };
 #endif
