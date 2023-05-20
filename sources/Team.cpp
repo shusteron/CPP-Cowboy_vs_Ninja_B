@@ -1,6 +1,7 @@
 #include "Team.hpp"
 #include <stdio.h>
 #include <iostream>
+#include <limits>
 
 namespace ariel{}
 using namespace std;
@@ -15,8 +16,9 @@ Team::Team(Character* leader): leader(leader){
 }
 
 void Team::add(Character* character){
-    if(this->team.size() < 10){
-        if(character->hasTeam()){ throw runtime_error("Character is already signed to a team"); }
+    if(character->hasTeam()){ throw runtime_error("Character is already signed to a team"); }
+
+    if(this->team.size() < 10 && character->isAlive()){
         this->team.push_back(character);
         character->setHasTeam(true);
     } else {
@@ -25,83 +27,97 @@ void Team::add(Character* character){
 }
 
 void Team::setNewLeader(){
-    // Getting the last alive character location in the vector.
-    Point closest(0,0);
-    for(Character* character : team){
-        if(character->isAlive()){
-            closest = this->team.back()->getLocation();
-            break;
-        }
-    }
-    Character* new_leader;
-    // Searching for a new leader.
-    for(Character* character : team){
-        if(character->isAlive()){
-            if(this->leader->distance(character) < this->leader->getLocation().distance(closest)){
-                new_leader = character;
-            }
-        }
-    }
+    double min_dis =numeric_limits<double>::max();
 
-    this->leader = new_leader;
+    // Searching for a new leader.
+    for(Character* character : this->team){
+            if(character->isAlive() && this->leader->distance(character) < min_dis){
+                min_dis = this->leader->distance(character);
+                this->leader = character;
+            }
+    }
 }
 
-Character* Team::closestEnemy(Team* enemy_team){
-    // Getting the last alive enemy character location in the enemy_team vector.
-    Point closest(0,0);
-    for(Character* character : team){
-        if(character->isAlive()){
-            closest = enemy_team->team.back()->getLocation();
-            break;
-        }
-    }
-    Character* closest_enemy;
+Character* Team::closestEnemy(Team* enemy_team){  
+    double min_dis = numeric_limits<double>::max();
+    Character* closest_enemy = nullptr;
+
     // Searching for the closest enemy.
-    for(Character* character : enemy_team->team){
+    for(Character* character : enemy_team->getTeam()){
         if(character->isAlive()){
-            if(this->leader->distance(character) < this->leader->getLocation().distance(closest)){
+            if(this->leader->distance(character) <= min_dis){
+                min_dis = this->leader->distance(character);
                 closest_enemy = character;
             }
         }
     }
-
     return closest_enemy;
 }
 
 void Team::attack(Team* enemy_team){
     if(enemy_team == nullptr) {throw invalid_argument("Cannot give nullptr to the attack() method."); }
+    if(this->stillAlive() == 0 || enemy_team->stillAlive() == 0){ throw runtime_error("there is no characters to attack or attack with."); }
 
+    // If the leader is dead, set a new one.
     if(!this->leader->isAlive()){
         this->setNewLeader();
     }
 
-    Character* closest_enemy = this->closestEnemy(enemy_team);
-    while(true){
-        // Cowboy.
-        for(Character* character : team){
-            if(typeid(*character) == typeid(Cowboy)){
-                Cowboy* cowboy = dynamic_cast<Cowboy*>(character);
-                if(closest_enemy->isAlive()){
-                    cowboy->shoot(closest_enemy);
-                } else{
-                    closest_enemy = this->closestEnemy(enemy_team);
+    // If there is still characters alive in the enemy team, get the closest enemy.
+    Character* closest_enemy = nullptr;
+    if(enemy_team->stillAlive() > 0){
+        closest_enemy = this->closestEnemy(enemy_team);
+    } else {
+        return;
+    }
+
+    // Cowboy.
+    for(auto& character : team) {
+        if(character->isAlive()) {
+            if(dynamic_cast<Cowboy*>(character)) {
+                Cowboy* cowboy =  (Cowboy*)(character);
+                if (closest_enemy != nullptr) { // Check if closest_enemy is not nullptr
+                    if (cowboy->isAlive()) {
+                        if (closest_enemy->isAlive()) {
+                            if (cowboy->hasBoolets()) {
+                                cowboy->shoot(closest_enemy);
+                            } else {
+                                cowboy->reload();
+                            }
+                        }
+                        if (!closest_enemy->isAlive() && enemy_team->stillAlive() > 0) {
+                            closest_enemy = this->closestEnemy(enemy_team);
+
+                        }
+                    }
                 }
             }
         }
+    }
 
-        // Ninja.
-        for(Character* character : team){
-            if(typeid(*character) == typeid(Ninja)){
-                Ninja* ninja = dynamic_cast<Ninja*>(character);
-                if(closest_enemy->isAlive()){
-                    ninja->slash(closest_enemy);
-                } else{
-                    closest_enemy = this->closestEnemy(enemy_team);
+    // Ninja.
+    for(auto& character : team) {
+        if(character->isAlive()) {
+            if(dynamic_cast<Ninja*>(character)) {
+                Ninja* ninja = (Ninja*)(character);
+                
+                if (closest_enemy != nullptr) { // Check if closest_enemy is not nullptr
+                    if (ninja->isAlive()) {
+                        if (closest_enemy->isAlive()) {
+                            if (ninja->distance(closest_enemy) <= 1) {
+                                ninja->slash(closest_enemy);
+                            }
+                            else {
+                                ninja->move(closest_enemy);
+                            }
+                        }
+                        if (!closest_enemy->isAlive() && enemy_team->stillAlive() > 0) {
+                            closest_enemy = this->closestEnemy(enemy_team);
+
+
+                        }
+                    }
                 }
-            }
-
-            if(!this->stillAlive() || !enemy_team->stillAlive()){
-                return;
             }
         }
     }

@@ -20,14 +20,14 @@ void Ninja::move(Character* enemy){
     if(distance <= this->speed){
         this->setLocation(enemy->getLocation());
     } else {
-        Point new_location = Point::moveTowards(this->getLocation(), enemy->getLocation(), this->speed);
+        Point new_location = this->getLocation().moveTowards(this->getLocation(), enemy->getLocation(), this->speed);
         this->setLocation(new_location);
     }
 }
 
 void Ninja::slash(Character* enemy){
     // Dead enemy.
-    if(!enemy->isAlive()){ throw runtime_error("Cnnot slash dead enemy."); }
+    if(enemy->isAlive() == false){ throw runtime_error("Cannot slash dead enemy."); }
     // Dead ninja trying to slash.
     if(!this->isAlive()){ throw runtime_error("Dead ninja cannot slash."); }
     // Trying to slash himself.

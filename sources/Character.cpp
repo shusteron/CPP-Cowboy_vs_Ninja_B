@@ -6,13 +6,9 @@
 namespace ariel{}
 using namespace std;
 
-Character::Character(string name, Point location, int hps): name(name), location(location), hps(hps){
+Character::Character(string name, Point location, int hps): name(name), location(location), hps(hps){}
 
-}
-
-Character::Character(string name, Point location): name(name), location(location){
-
-}
+Character::Character(string name, Point location): name(name), location(location){}
 
 bool Character::isAlive(){
     return this->hps > 0;
@@ -31,7 +27,10 @@ void Character::hit(int dmg){
     if(dmg < 0){
         throw invalid_argument("Damage cannot be negative");
     }
-    this->hps -= dmg;
+    if(this->hps - dmg >= 0)
+        this->hps -= dmg;
+    else
+        this->hps=0;    
 }
 
 string Character::getName(){

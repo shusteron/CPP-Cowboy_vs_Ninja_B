@@ -43,5 +43,5 @@ string Cowboy::print(){
     if ( this->isAlive()){
         return "C  name:" + this->getName() + " HP: " + to_string(this->getHP()) + "Location: " + this->getLocation().print();
     }
-    return "C  name:(" + this->getName() + ") " + "Location: " + this->getLocation().print();
+    return "C  name:(" + this->getName() + ") " + " Location: " + this->getLocation().print();
 }

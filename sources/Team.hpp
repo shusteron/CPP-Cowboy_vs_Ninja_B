@@ -25,6 +25,7 @@ class Team{
         void print();   
         void setNewLeader();
         Character* closestEnemy(Team* enemy_team);
+        vector<Character*> getTeam() { return this->team; }
         ~Team();
 };
 #endif
