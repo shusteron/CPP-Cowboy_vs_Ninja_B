@@ -42,5 +42,5 @@ string Ninja::print(){
     if ( this->isAlive()){
         return "N name:" + this->getName() + " HP: " + to_string(this->getHP()) + "Location: " + this->getLocation().print();
     }
-    return "N name:(" + this->getName() + ") " + "Location: " + this->getLocation().print();
+    return "N name:(" + this->getName() + ") " + " Location: " + this->getLocation().print();
 }

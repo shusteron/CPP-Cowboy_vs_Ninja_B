@@ -19,8 +19,8 @@ class Point{
         static Point moveTowards(Point from, Point goal, double distance);
         double getX();
         double getY();
-        void setX(double x);
-        void setY(double y);
+        void setX(double _x_);
+        void setY(double _y_);
 };
 
 #endif

@@ -8,12 +8,10 @@
 namespace ariel{}
 
 class Team2: public Team{
-    // private:
-    //     vector<Character*> team;
-    //     Character* leader;
-
+    
     public:
         Team2(Character* leader);
+        void attack(Team* enemy_team) override;
 };
 
 

@@ -20,12 +20,14 @@ class Team{
     public:
         Team(Character* leader);
         void add(Character* character);
-        void attack(Team* enemy_team);
+        virtual void attack(Team* enemy_team);
         int stillAlive();
         void print();   
         void setNewLeader();
         Character* closestEnemy(Team* enemy_team);
         vector<Character*> getTeam() { return this->team; }
+        Character* getLeader() { return this->leader; }
+        void setLeader(Character* leader)  {this->leader = leader; }
         ~Team();
 };
 #endif

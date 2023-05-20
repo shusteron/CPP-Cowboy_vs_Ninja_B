@@ -28,14 +28,15 @@ void Team::add(Character* character){
 
 void Team::setNewLeader(){
     double min_dis =numeric_limits<double>::max();
-
+    Character* new_leader = nullptr;
     // Searching for a new leader.
-    for(Character* character : this->team){
-            if(character->isAlive() && this->leader->distance(character) < min_dis){
-                min_dis = this->leader->distance(character);
-                this->leader = character;
+    for(Character* character : this->getTeam()){
+            if(character->isAlive() && this->getLeader()->distance(character) < min_dis){
+                min_dis = this->getLeader()->distance(character);
+                new_leader = character;
             }
     }
+    setLeader(new_leader);
 }
 
 Character* Team::closestEnemy(Team* enemy_team){  
@@ -45,8 +46,8 @@ Character* Team::closestEnemy(Team* enemy_team){
     // Searching for the closest enemy.
     for(Character* character : enemy_team->getTeam()){
         if(character->isAlive()){
-            if(this->leader->distance(character) <= min_dis){
-                min_dis = this->leader->distance(character);
+            if(this->getLeader()->distance(character) < min_dis){
+                min_dis = this->getLeader()->distance(character);
                 closest_enemy = character;
             }
         }
@@ -65,11 +66,7 @@ void Team::attack(Team* enemy_team){
 
     // If there is still characters alive in the enemy team, get the closest enemy.
     Character* closest_enemy = nullptr;
-    if(enemy_team->stillAlive() > 0){
-        closest_enemy = this->closestEnemy(enemy_team);
-    } else {
-        return;
-    }
+    closest_enemy = this->closestEnemy(enemy_team);
 
     // Cowboy.
     for(auto& character : team) {
@@ -87,13 +84,13 @@ void Team::attack(Team* enemy_team){
                         }
                         if (!closest_enemy->isAlive() && enemy_team->stillAlive() > 0) {
                             closest_enemy = this->closestEnemy(enemy_team);
-
-                        }
+                        } 
                     }
                 }
             }
         }
     }
+
 
     // Ninja.
     for(auto& character : team) {
@@ -113,9 +110,7 @@ void Team::attack(Team* enemy_team){
                         }
                         if (!closest_enemy->isAlive() && enemy_team->stillAlive() > 0) {
                             closest_enemy = this->closestEnemy(enemy_team);
-
-
-                        }
+                        } 
                     }
                 }
             }
