@@ -28,6 +28,17 @@ class Team{
         vector<Character*> getTeam() { return this->team; }
         Character* getLeader() { return this->leader; }
         void setLeader(Character* leader)  {this->leader = leader; }
-        ~Team();
+        // To pass tidy:
+
+        // Destructor.
+        virtual ~Team();
+        // Copy constuctor.
+        Team(Team& other);
+        // Copy assigment opertor ( = ).
+        Team& operator=(const Team& other);
+        // Move operator.
+        Team& operator=(Team&& other) noexcept;
+        // Move
+        Team(Team&& other) noexcept;
 };
 #endif

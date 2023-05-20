@@ -28,7 +28,18 @@ class Character{
         int getHP();
         bool hasTeam();
         void setHasTeam(bool flag);
+        // To pass tidy:
+
+        // Destructor.
         virtual ~Character() = default;
+        // Copy constuctor.
+        Character(const Character& other);
+        // Copy assigment opertor ( = ).
+        Character& operator=(const Character& other);
+        // Move operator
+        Character& operator=(Character&& other) noexcept;
+        // Move
+        Character(Character&& other) noexcept;
 
 };
 #endif

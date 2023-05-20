@@ -134,11 +134,42 @@ void Team::print(){
     }
 }
 
+// To pass tidy methods:
 Team::~Team(){
     for (Character* character : team) {
-        character->~Character();
+        delete character;
     }
-    // Clear the team vector
+    // Clear the team vector.
     team.clear();
 }
 
+// Copy constuctor.
+Team::Team(Team& other){
+    team = other.team;
+    leader = other.leader;
+}
+
+// Copy assigment operator (=).
+Team& Team::operator=(const Team& other){
+    if(this == &other){
+        return *this;
+    }
+    team = other.team;
+    leader = other.leader;
+
+    return *this;
+}
+
+//Move assigment operator (=).
+Team& Team::operator=(Team&& other) noexcept{
+    team = other.team;
+    leader = other.leader;
+
+    return *this;
+}
+
+// Move
+Team::Team(Team&& other) noexcept{
+    team = other.team;
+    leader = other.leader;
+}
