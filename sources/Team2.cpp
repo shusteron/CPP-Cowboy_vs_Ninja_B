@@ -64,5 +64,10 @@ void Team2::attack(Team* enemy_team){
             }
         }
     }
+}
 
+void Team2::print(){
+    for(Character* character : this->getTeam()){
+        cout << character->print() << endl;
+    }
 }

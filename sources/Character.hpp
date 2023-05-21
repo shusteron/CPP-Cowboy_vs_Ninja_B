@@ -22,7 +22,7 @@ class Character{
         double distance(Character* other_character);
         void hit(int dmg);
         string getName();
-        Point getLocation();
+        Point getLocation() const;
         void setLocation(Point location);
         virtual string print() = 0;   
         int getHP();

@@ -22,7 +22,7 @@ class Team{
         void add(Character* character);
         virtual void attack(Team* enemy_team);
         int stillAlive();
-        void print();   
+        virtual void print();   
         void setNewLeader();
         Character* closestEnemy(Team* enemy_team);
         vector<Character*> getTeam() { return this->team; }

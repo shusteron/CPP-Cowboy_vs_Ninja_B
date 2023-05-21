@@ -17,8 +17,8 @@ class Point{
         double distance(Point point);
         string print(); 
         static Point moveTowards(Point from, Point goal, double distance);
-        double getX();
-        double getY();
+        double getX() const;
+        double getY() const;
         void setX(double _x_);
         void setY(double _y_);
 };

@@ -12,6 +12,8 @@ class Team2: public Team{
     public:
         Team2(Character* leader);
         void attack(Team* enemy_team) override;
+        void print() override;
+
 };
 
 

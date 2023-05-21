@@ -10,20 +10,25 @@ Character::Character(string name, Point location, int hps): name(name), location
 
 Character::Character(string name, Point location): name(name), location(location){}
 
+// Return if cahracter is alive.
 bool Character::isAlive(){
     return this->hps > 0;
 }
 
+// Measure distance between two characters.
 double Character::distance(Character* other_character){
     return this->getLocation().distance(other_character->getLocation());
 }
 
+// Sets new location.
 void Character::setLocation(Point location){
     this->location.setX(location.getX());
     this->location.setY(location.getY());
 }
 
+// A method that reduce character's HP.
 void Character::hit(int dmg){
+    // Damage must be greater than zero.
     if(dmg < 0){
         throw invalid_argument("Damage cannot be negative");
     }
@@ -33,23 +38,28 @@ void Character::hit(int dmg){
         this->hps=0;    
 }
 
+// Returns charactrer's name.
 string Character::getName(){
     return this->name;
 }
 
-Point Character::getLocation(){
+// Returns character's location point.
+Point Character::getLocation() const{
     Point return_location = Point(this->location.getX(), this->location.getY());
     return return_location;
 }
 
+// Checks if the current character has team.
 bool Character::hasTeam(){
     return this->team_flag;
 }
 
+// Updating character's team status.
 void Character::setHasTeam(bool new_flag){
     this->team_flag = new_flag;
 }
 
+// Returns character's HP.
 int Character::getHP(){
     return this->hps;
 }

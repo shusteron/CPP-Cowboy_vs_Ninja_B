@@ -30,6 +30,7 @@ void Cowboy::shoot(Character* enemy){
     this->bullets -= 1;
 }
 
+// Checks if the cowboy has bullets.
 bool Cowboy::hasBoolets(){
     return this->bullets;
 }

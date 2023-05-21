@@ -15,6 +15,7 @@ Team::Team(Character* leader): leader(leader){
     leader->setHasTeam(true);
 }
 
+// Adding a new character to the team.
 void Team::add(Character* character){
     if(character->hasTeam()){ throw runtime_error("Character is already signed to a team"); }
 
@@ -26,6 +27,7 @@ void Team::add(Character* character){
     }
 }
 
+// Sets a new leader to the team.
 void Team::setNewLeader(){
     double min_dis =numeric_limits<double>::max();
     Character* new_leader = nullptr;
@@ -39,6 +41,7 @@ void Team::setNewLeader(){
     setLeader(new_leader);
 }
 
+// Returns the closest enemy to the leader.
 Character* Team::closestEnemy(Team* enemy_team){  
     double min_dis = numeric_limits<double>::max();
     Character* closest_enemy = nullptr;
@@ -73,16 +76,16 @@ void Team::attack(Team* enemy_team){
         if(character->isAlive()) {
             if(dynamic_cast<Cowboy*>(character)) {
                 Cowboy* cowboy =  (Cowboy*)(character);
-                if (closest_enemy != nullptr) { // Check if closest_enemy is not nullptr
+                if (closest_enemy != nullptr) {
                     if (cowboy->isAlive()) {
-                        if (closest_enemy->isAlive()) {
-                            if (cowboy->hasBoolets()) {
+                        if (closest_enemy->isAlive()) { 
+                            if (cowboy->hasBoolets()) { //If the target is alice and you have bullets -> shoot him, else, reload.
                                 cowboy->shoot(closest_enemy);
                             } else {
                                 cowboy->reload();
                             }
                         }
-                        if (!closest_enemy->isAlive() && enemy_team->stillAlive() > 0) {
+                        if (!closest_enemy->isAlive() && enemy_team->stillAlive() > 0) {    //If the target is dead, find a new one.
                             closest_enemy = this->closestEnemy(enemy_team);
                         } 
                     }
@@ -98,10 +101,10 @@ void Team::attack(Team* enemy_team){
             if(dynamic_cast<Ninja*>(character)) {
                 Ninja* ninja = (Ninja*)(character);
                 
-                if (closest_enemy != nullptr) { // Check if closest_enemy is not nullptr
+                if (closest_enemy != nullptr) { 
                     if (ninja->isAlive()) {
                         if (closest_enemy->isAlive()) {
-                            if (ninja->distance(closest_enemy) <= 1) {
+                            if (ninja->distance(closest_enemy) <= 1) {  //If the target is alive and you are close enough to attack -> slash him, else, get closer to the target.
                                 ninja->slash(closest_enemy);
                             }
                             else {
@@ -118,6 +121,7 @@ void Team::attack(Team* enemy_team){
     }
 }
 
+// A method thar returns how many alive in the team.
 int Team::stillAlive(){
     int alive = 0;
     for(Character* character : team){
@@ -130,7 +134,14 @@ int Team::stillAlive(){
 
 void Team::print(){
     for(Character* character : team){
-        cout << character->print() << endl;
+        if(dynamic_cast<Cowboy*>(character)){
+            cout << character->print() << endl;
+        }
+    }
+    for(Character* character : team){
+        if(dynamic_cast<Ninja*>(character)){
+            cout << character->print() << endl;
+        }
     }
 }
 

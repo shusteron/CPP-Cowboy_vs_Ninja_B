@@ -8,10 +8,9 @@ namespace ariel{}
 using namespace std;
 
 
-Ninja::Ninja(string name, Point location, int hps, int speed):Character(name,location, hps), speed(speed){
+Ninja::Ninja(string name, Point location, int hps, int speed):Character(name,location, hps), speed(speed) {}
 
-}
-
+// Moves ninja to a new location.
 void Ninja::move(Character* enemy){
     double distance = this->distance(enemy);
 
