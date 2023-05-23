@@ -13,6 +13,7 @@
 using namespace std;
 
 #include "sources/Team.hpp" //no need for other includes
+#include "sources/SmartTeam.hpp"
 
 using namespace ariel;
 
@@ -35,7 +36,6 @@ int main() {
 
      Team team_B(sushi);
      team_B.add(new TrainedNinja("Hikari", Point(12,81)));
-
 
      while(team_A.stillAlive() > 0 && team_B.stillAlive() > 0){
         team_A.attack(&team_B);

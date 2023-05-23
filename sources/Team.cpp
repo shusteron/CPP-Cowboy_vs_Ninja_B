@@ -6,6 +6,7 @@
 namespace ariel{}
 using namespace std;
 
+#define MAX_TEAMATES 10
 
 Team::Team(Character* leader): leader(leader){
     if(leader->hasTeam()){
@@ -19,7 +20,7 @@ Team::Team(Character* leader): leader(leader){
 void Team::add(Character* character){
     if(character->hasTeam()){ throw runtime_error("Character is already signed to a team"); }
 
-    if(this->team.size() < 10 && character->isAlive()){
+    if(this->team.size() < MAX_TEAMATES && character->isAlive()){
         this->team.push_back(character);
         character->setHasTeam(true);
     } else {
@@ -46,7 +47,7 @@ Character* Team::closestEnemy(Team* enemy_team){
     double min_dis = numeric_limits<double>::max();
     Character* closest_enemy = nullptr;
 
-    // Searching for the closest enemy.
+    // Searching for the closest alive enemy.
     for(Character* character : enemy_team->getTeam()){
         if(character->isAlive()){
             if(this->getLeader()->distance(character) < min_dis){
@@ -79,7 +80,7 @@ void Team::attack(Team* enemy_team){
                 if (closest_enemy != nullptr) {
                     if (cowboy->isAlive()) {
                         if (closest_enemy->isAlive()) { 
-                            if (cowboy->hasBoolets()) { //If the target is alice and you have bullets -> shoot him, else, reload.
+                            if (cowboy->hasBoolets()) { //If the target is alive and you have bullets -> shoot him, else, reload.
                                 cowboy->shoot(closest_enemy);
                             } else {
                                 cowboy->reload();
@@ -93,7 +94,6 @@ void Team::attack(Team* enemy_team){
             }
         }
     }
-
 
     // Ninja.
     for(auto& character : team) {

@@ -24,12 +24,14 @@ void Team2::attack(Team* enemy_team){
         return;
     }
 
+    // Simillar to the attack() in Team but without importancy of the character type,
     for(auto& character : this->getTeam()) {
         if(character->isAlive()){
             if(dynamic_cast<Cowboy*>(character)) {
+                // Cowboy.
                 Cowboy* cowboy =  (Cowboy*)(character);
 
-                if (closest_enemy != nullptr) { // Check if closest_enemy is not nullptr
+                if (closest_enemy != nullptr) { 
                     if (cowboy->isAlive()) {
                         if (closest_enemy->isAlive()) {
                             if (cowboy->hasBoolets()) {
@@ -44,10 +46,13 @@ void Team2::attack(Team* enemy_team){
                         }
                     }
                 }
-            } else {
+            }
+            
+            // Ninja.
+            else {
                 Ninja* ninja = (Ninja*)(character);
                 
-                if (closest_enemy != nullptr) { // Check if closest_enemy is not nullptr
+                if (closest_enemy != nullptr) {
                     if (ninja->isAlive()) {
                         if (closest_enemy->isAlive()) {
                             if (ninja->distance(closest_enemy) <= 1) {

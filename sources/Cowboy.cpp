@@ -35,6 +35,7 @@ bool Cowboy::hasBoolets(){
     return this->bullets;
 }
 
+
 void Cowboy::reload(){
     if(!this->isAlive()) { throw runtime_error("Dead cowboy cannot reload."); }
     this->bullets = BULLETS;

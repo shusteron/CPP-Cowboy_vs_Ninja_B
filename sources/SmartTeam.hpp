@@ -7,11 +7,11 @@
 
 namespace ariel{}
 
-class SmartTeam: public Team{
-    
+class SmartTeam: public Team{    
     public:
         SmartTeam(Character* leader);
         void attack(Team* enemy_team) override;
+        Character* farthestCharacter(Character* curr, Team* team);
 };
 
 
